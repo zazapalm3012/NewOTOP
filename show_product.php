@@ -33,7 +33,7 @@ $conn = new DB_conn;
       
       ?>
       <div class="col-sm-4">
-        <img src="../<?=$row['pImage']?>" width="200px" height="250px" class="mt-5 pt-2 my-2 border">
+        <img src="<?=$row['pImage']?>" width="200px" height="250px" class="mt-5 pt-2 my-2 border">
         <br>
         ID: <?=$row['pId']?> <br>
         <h5 class ="text-success">  <?=$row['pName']?><br> </h5>

@@ -74,11 +74,6 @@ $conn = new DB_conn;
                         $Total = $_SESSION["strQty"][$i];
                         $sum = $Total * $row_pro['pPrice'];
                         $sumprice +=$sum;
-                        
-                      
-                   
-                    
-                
                 ?>
               <tr>
                 <td><?=$m?></td>
@@ -88,7 +83,7 @@ $conn = new DB_conn;
                 <td><?=$sumprice?></td>
                 <td>
                     <a href="order.php?id=<?=$row_pro['pId']?>" class= "btn btn-outline-primary">+</a>
-                    <a href="order" class= "btn btn-outline-primary">-</a>
+                    <a href="order_del.php" class= "btn btn-outline-primary">-</a>
                     
                 </td>
             </tr>
