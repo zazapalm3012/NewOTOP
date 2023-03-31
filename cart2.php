@@ -38,10 +38,10 @@ $conn = new DB_conn;
 
 <body>
     <?php
-    include_once('navbar_index.php');
+    include_once('navbar.php');
 ?>
 <div class="container">
-    <form id="form1" method= "get" action="">
+    <form id="form1" method= "POST" action="">
     <div class="row">
         <div class = "col-md-10">
             <table class="table table-hover">
@@ -51,21 +51,20 @@ $conn = new DB_conn;
                     <th>ราคา</th>
                     <th>จำนวน</th>
                     <th>ราคารวม</th>
+
+                    <th> </th>
+                    <th> </th>
                 </tr>
                 <?php
-                
-                $id =  $_GET['id'];
-                $sql = $conn->select_product_by_id($id);
-                //$result = mysqli_query($conn, $sql);
-                $row = mysqli_fetch_array($sql);
-                
                 $Total=0;
                 $sumprice = 0;
                 $m=1;
+                if(isset($_SESSION["intLine"]) ){
+
                 for($i=0; $i <= (int)$_SESSION["intLine"]; $i++){
-                   
+                   if( isset($_SESSION["strProductID"][$i])){
                     if(($_SESSION["strProductID"][$i]) != ""){
-                $sql1 = $conn->select_product_by_session($_SESSION["strProductID"][$i]);
+                    $sql1 = $conn->select_product_by_session($_SESSION["strProductID"][$i]);
                  
                         //$result1 = mysqli_query($conn, $sql1);
                         $row_pro = mysqli_fetch_array($sql1);
@@ -73,26 +72,42 @@ $conn = new DB_conn;
                        $_SESSION["price"] = $row_pro['pPrice'];
                         $Total = $_SESSION["strQty"][$i];
                         $sum = $Total * $row_pro['pPrice'];
-                        $sumprice +=$sum;
+                        $sumprice  =$sumprice + $sum;
                 ?>
               <tr>
                 <td><?=$m?></td>
                 <td><?=$row_pro['pName']?></td>
                 <td><?=$row_pro['pPrice']?></td>
-                <td><?=$_SESSION["strQty"][$i]?></td>
-                <td><?=$sumprice?></td>
+                <td><?=$_SESSION['strQty'][$i]?></td>
+                <td><?=$sum?></td>
+
                 <td>
                     <a href="order.php?id=<?=$row_pro['pId']?>" class= "btn btn-outline-primary">+</a>
-                    <a href="order_del.php" class= "btn btn-outline-primary">-</a>
-                    
+                    <?php if($_SESSION["strQty"][$i] > 1){  ?>
+                    <a href="order_del.php?id=<?=$row_pro['pId']?>" class= "btn btn-outline-primary">-</a>
+                    <?php }   ?>
                 </td>
+                <td><a class="btn" href="pro_delete.php?Line=<?=$i?>"><i  class="fa-solid fa-xmark pt-2"></i></td>
+
             </tr>
             <?php
             $m+=1;
                 }
                 }
+            }
+        }
+        else{
+            echo "<script> alert('asdasdasd'); </script>";
+            echo "<script>window.location.href='index.php' </script>";
+
+        }
                 ?>
             </table>
+            <div style = "text-align:right">
+            <a href ="index.php" ><button type="button" class"btn btn-outline-secondary">เลือกสินค้า</button></a>
+            <a href ="checkout.php?id=<?= $_SESSION['name']?>" ><button type="button" class"btn btn-outline-primary">ยืนยันการสั่งซื้อ</button></a>
+
+            </div>
         </div>
     </div>
 
@@ -107,7 +122,7 @@ $conn = new DB_conn;
 
 
       <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>

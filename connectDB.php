@@ -1,7 +1,4 @@
 <?php
-/*
-ณัฐนนท์ ชมภูนุช 6430200213
-*/
 DEFINE("DB_SERVER","localhost");
 DEFINE("DB_USERNAME","root");
 DEFINE("DB_PASSWORD","");
@@ -45,9 +42,25 @@ class DB_conn{
         $str = mysqli_query($this->conn,"SELECT * from member");
         return $str;
         }
+    public function display_product(){
+        $str = mysqli_query($this->conn,"SELECT * from product");
+        return $str;
+        }
+        public function display_category(){
+            $str = mysqli_query($this->conn,"SELECT * from category");
+            return $str;
+            }
     
     public function edit_member($fname, $lname,$email,$id ){
-        $str = mysqli_query($this->conn,"UPDATE member SET first_name = '$fname', last_name ='$lastname',email = '$email' WHERE member_id = $id ");
+        $str = mysqli_query($this->conn,"UPDATE member SET first_name = '$fname', last_name ='$lname',email = '$email' WHERE member_id = $id ");
+        return $str;
+    }
+    public function edit_product($pname, $dtail,$Pprice,$id ){
+        $str = mysqli_query($this->conn,"UPDATE product SET pName = '$pname', pDetail ='$dtail',pPrice = '$Pprice' WHERE pId = $id ");
+        return $str;
+    }
+    public function edit_category($cate_name,$id ){
+        $str = mysqli_query($this->conn,"UPDATE category SET c_name = '$cate_name' WHERE c_id = $id ");
         return $str;
     }
 
@@ -55,7 +68,14 @@ class DB_conn{
         $str = mysqli_query($this->conn,"DELETE FROM member WHERE member_id = $id ");
         return $str;
     }
- 
+    public function del_product($id) {
+        $str = mysqli_query($this->conn,"DELETE FROM product WHERE pId = $id ");
+        return $str;
+    }
+    public function del_category($id) {
+        $str = mysqli_query($this->conn,"DELETE FROM category WHERE c_id = $id ");
+        return $str;
+    }
     public function registration($fname, $lname,$email, $uname,$password,$type){
         $str = mysqli_query($this->conn, "INSERT INTO member (first_name,last_name,email,username,password,type)
         VALUES ('$fname','$lname','$email','$uname','$password','$type')");
@@ -66,6 +86,14 @@ class DB_conn{
         $str = mysqli_query($this->conn,"SELECT * from member where member_id = $id");
         return $str;    
         }
+        public function display_product_edit($id){
+            $str = mysqli_query($this->conn,"SELECT * from product where pId = $id");
+            return $str;    
+            }
+            public function display_category_edit($id){
+                $str = mysqli_query($this->conn,"SELECT * from category where c_id = $id");
+                return $str;    
+                }
         public function select_category(){
             $strSQL = "SELECT * FROM category ORDER BY c_name ASC";
             $str = mysqli_query($this->conn, $strSQL);
@@ -78,6 +106,12 @@ class DB_conn{
             $str = mysqli_query($this->conn,$strSQL); 
             return $str;
             }
+            public function insert_category($category_name){
+                $strSQL = "INSERT INTO category (c_name)
+                values ('$category_name')"; 
+                $str = mysqli_query($this->conn,$strSQL); 
+                return $str;
+                }
 
             public function check_login($uname,$password){
                 $str = mysqli_query($this->conn, "SELECT member_id, first_name, last_name
@@ -95,6 +129,17 @@ class DB_conn{
                 $str = mysqli_query($this->conn, "DELETE from product where pId in (". implode(',', $product_id) . ")");
                 return $str;
             }
-
+            function addToCart($product_id, $quantity) {
+                if(isset($_SESSION['cart'][$product_id])) {
+                  $_SESSION['cart'][$product_id] += $quantity;
+                } else {
+                  $_SESSION['cart'][$product_id] = $quantity;
+                }
+              }
+              function autofill_name($name){
+                $str = mysqli_query($this->conn, "SELECT * from member where first_name = '$name'");
+                  return $str;
+          }
+             
 }
 ?>

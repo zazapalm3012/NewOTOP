@@ -1,5 +1,8 @@
+
 <?php
+
 include_once ("connectDB.php");
+include_once ("navbar_admin.php");
 $conn = new DB_conn;
 ?>
     
@@ -8,6 +11,7 @@ $conn = new DB_conn;
 <html lang="en">
 
 <head>
+    
     <meta charset="utf-8">
     <title>EShopper - Bootstrap Shop Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -29,6 +33,7 @@ $conn = new DB_conn;
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
@@ -36,44 +41,50 @@ $conn = new DB_conn;
 </head>
 
 <body>
-    <!--Header-->
 
-<div class="container">
- <h3 class="mt-5">เพิ่มข้อมูลสินค้า</h3>
- <form method="POST" action = "insert_product.php" enctype="multipart/form-data">
- <div class="mb-3">
- <label class="form-label">ชื่อสินค้า:</label>
- <input type="text" class="form-control" id="name" name="name">
- </div>
- <div class="mb-3">
- <label class="form-label">รายละเอียดสินค้า:</label>
- <input type="text" class="form-control" id="detail" name="detail">
- </div>
- <div class="mb-3">
- <label class="form-label">ราคา: </label>
- <input type="text" class="form-control" id="price" name="price">
- </div>
- <div class="mb-3">
- <label class="form-label">รูปภาพสินค้า</label>
- <input type="file" class="form-control" id="picture" name="picture">
- </div>
- <div class="mb-3">
- <select class="form-control" name="category" id="category ">
- <option value=""><-- กรุณาเลือกประเภท --></option>
- <?php
- $sql = $conn->select_category();
+<div class="container pt-5">
+ <div class="row" >
+ <div class="col-lg-8 table-responsive mb-5">
+ <table class="table table-bordered text-center mb-0">
+ <thead class="bg-secondary text-dark">
+ <tr>
+ <td colspan="7"><h3>ข้อมูล สมาชิก </h3    ></td>
+ </tr>
+ <tr>
+ <th>ลําดับ</th>
+ <th>ชื่อ</th>
+ <th>นามสกุล</th>
+ <th>email</th>
+ <th>username</th>
+ <th>แก้ไข</th>
+ <th>ลบ</th>
+ </tr>
+ </thead>
+ <tbody class="align-middle">
+ <?php 
+ $sql  = $conn->display_member();
+ $i =1 ;
  while($data = mysqli_fetch_array($sql)){
- ?>
- <option value="<?php echo $data['c_id'];?>" > <?php echo $data['c_name'];?> </option>
- <?php
- }
- ?>
- </select>
- </div>
- <button type="submit" class="btn btn-primary" id="submit" name="submit">บันทึกข้อมูลสินค้า </button>
- </form>
+    //echo $data['first_name'];?>
+
+ <tr>
+ <td class="align-middle"> <?php echo $i; ?></td>
+ <td class="align-middle"> <?php echo $data['first_name']; ?> </td>
+ <td class="align-middle"> <?php echo $data['last_name']; ?> </td>
+ <td class="align-middle"><?php echo $data['email']; ?></td>
+ <td class="align-middle"><?php echo $data['username']; ?></td>
+ <td class="align-middle"><a href="formEdit.php?id=<?php echo $data['member_id']?>" class="btn btn-sm
+btn-primary"> Edit</a></td> 
+ <td class="align-middle"><a href="del.php?id=<?php echo $data['member_id']?>" class="btn btn-sm btn-primary" onclick="return confirm('คุณต้องการลบข้อมูลใช่หรือไม่')"><i class="fa fa-times"></i></a></td>
+ </tr>
+
+ <?php  $i= $i+1;}?>
+
+ </tbody>
+ </table>
  </div>
 
-
-</body>
-</html>
+ </div>
+ </div> 
+ </body>
+ </html>

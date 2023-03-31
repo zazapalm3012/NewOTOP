@@ -1,7 +1,4 @@
 <?php
-/*
-ณัฐนนท์ ชมภูนุช 6430200213
-*/
 ini_set('file_uploads', '1');
 include_once ("connectDB.php");
 $conn = new DB_conn;

@@ -39,38 +39,15 @@ $conn = new DB_conn;
     <!--Header-->
 
 <div class="container">
- <h3 class="mt-5">เพิ่มข้อมูลสินค้า</h3>
- <form method="POST" action = "insert_product.php" enctype="multipart/form-data">
+ <h3 class="mt-5">เพิ่มข้อมูลประเภทสินค้า</h3>
+ <form method="POST" action = "insert_category.php" enctype="multipart/form-data">
  <div class="mb-3">
- <label class="form-label">ชื่อสินค้า:</label>
+ <label class="form-label">ชื่อประเภทสินค้า:</label>
  <input type="text" class="form-control" id="name" name="name">
  </div>
- <div class="mb-3">
- <label class="form-label">รายละเอียดสินค้า:</label>
- <input type="text" class="form-control" id="detail" name="detail">
- </div>
- <div class="mb-3">
- <label class="form-label">ราคา: </label>
- <input type="text" class="form-control" id="price" name="price">
- </div>
- <div class="mb-3">
- <label class="form-label">รูปภาพสินค้า</label>
- <input type="file" class="form-control" id="picture" name="picture">
- </div>
- <div class="mb-3">
- <select class="form-control" name="category" id="category ">
- <option value=""><-- กรุณาเลือกประเภท --></option>
- <?php
- $sql = $conn->select_category();
- while($data = mysqli_fetch_array($sql)){
- ?>
- <option value="<?php echo $data['c_id'];?>" > <?php echo $data['c_name'];?> </option>
- <?php
- }
- ?>
  </select>
  </div>
- <button type="submit" class="btn btn-primary" id="submit" name="submit">บันทึกข้อมูลสินค้า </button>
+ <button type="submit" class="ms-5 btn btn-primary " id="submit" name="submit">บันทึกข้อมูลสินค้า </button>
  </form>
  </div>
 

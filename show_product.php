@@ -1,8 +1,6 @@
 <?php
 include_once ("connectDB.php");
-include_once ("navbar_index.php");
 
-session_start();
 $conn = new DB_conn;
 
 
@@ -23,14 +21,15 @@ $conn = new DB_conn;
 
   </head>
   <body>
+  <?php
+
+?>
    <div class="container">
     <div class="row">
       <?php
       $sql = $conn->select_all_by_id(); /*"SELECT * FROM product order by pId";*/
      // $result = mysqli_query($conn,$sql);
       while($row = mysqli_fetch_array($sql)){
-        
-      
       ?>
       <div class="col-sm-4">
         <img src="<?=$row['pImage']?>" width="200px" height="250px" class="mt-5 pt-2 my-2 border">
@@ -38,11 +37,14 @@ $conn = new DB_conn;
         ID: <?=$row['pId']?> <br>
         <h5 class ="text-success">  <?=$row['pName']?><br> </h5>
         ราคา: <?=$row['pPrice']?> บาท<br>
-        <a class ="btn btn-outline-success  mt-1"href="order.php?id=<?=$row['pId']?>">รายละเอียด</a>
+        
+       <a class ="btn btn-outline-success mt-1" name = "p_add" href="order.php?id=<?=$row['pId']?>">สั่งซื้อ</a>      
+       
+       
+
       </div>
       <?php
       }
-
       ?>
     </div>
     
