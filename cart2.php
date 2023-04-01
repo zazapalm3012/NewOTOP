@@ -41,7 +41,13 @@ $conn = new DB_conn;
     include_once('navbar.php');
 ?>
 <div class="container">
-    <form id="form1" method= "POST" action="">
+<?php
+                $Total=0;
+                $sumprice = 0;
+                $m=1;
+                if(isset($_SESSION["intLine"]) and $_SESSION["Total"] !=0){
+                    ?>
+    <form id="form1" method= "post" action="">
     <div class="row">
         <div class = "col-md-10">
             <table class="table table-hover">
@@ -51,16 +57,13 @@ $conn = new DB_conn;
                     <th>ราคา</th>
                     <th>จำนวน</th>
                     <th>ราคารวม</th>
+                    <th>เพิ่ม - ลด</th>
+                    <th> ลบ</th>
 
                     <th> </th>
                     <th> </th>
                 </tr>
-                <?php
-                $Total=0;
-                $sumprice = 0;
-                $m=1;
-                if(isset($_SESSION["intLine"]) ){
-
+                <?php                
                 for($i=0; $i <= (int)$_SESSION["intLine"]; $i++){
                    if( isset($_SESSION["strProductID"][$i])){
                     if(($_SESSION["strProductID"][$i]) != ""){
@@ -73,6 +76,7 @@ $conn = new DB_conn;
                         $Total = $_SESSION["strQty"][$i];
                         $sum = $Total * $row_pro['pPrice'];
                         $sumprice  =$sumprice + $sum;
+                        $_SESSION["sumprice"] = $sumprice ;
                 ?>
               <tr>
                 <td><?=$m?></td>
@@ -87,7 +91,7 @@ $conn = new DB_conn;
                     <a href="order_del.php?id=<?=$row_pro['pId']?>" class= "btn btn-outline-primary">-</a>
                     <?php }   ?>
                 </td>
-                <td><a class="btn" href="pro_delete.php?Line=<?=$i?>"><i  class="fa-solid fa-xmark pt-2"></i></td>
+                <td><a class="btn" href="pro_delete.php?Line=<?=$i?>"><i  class="fa-solid fa-xmark pt-2 "></i></td>
 
             </tr>
             <?php
@@ -95,25 +99,27 @@ $conn = new DB_conn;
                 }
                 }
             }
-        }
-        else{
-            echo "<script> alert('asdasdasd'); </script>";
-            echo "<script>window.location.href='index.php' </script>";
+        }else{
+            echo "<script>window.location ='empty.php' </script>";
 
         }
                 ?>
             </table>
             <div style = "text-align:right">
             <a href ="index.php" ><button type="button" class"btn btn-outline-secondary">เลือกสินค้า</button></a>
-            <a href ="checkout.php?id=<?= $_SESSION['name']?>" ><button type="button" class"btn btn-outline-primary">ยืนยันการสั่งซื้อ</button></a>
+            
 
             </div>
         </div>
     </div>
-
-
     </form>
     
+    <form id="form1"  action="checkout.php" method= "POST">
+        <div class = "col-md-10 mt-2" style="text-align:right">
+    <input type="hidden" id="id" name="id" value="<?= $_SESSION['name']?>">
+    <button type="submit" class"btn btn-primary me-md-2>ยืนยันการสั่งซื้อ</button>
+    </div>
+    </form>
 </div>
 
 
@@ -122,7 +128,7 @@ $conn = new DB_conn;
 
 
       <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>

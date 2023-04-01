@@ -32,7 +32,9 @@ $conn = new DB_conn;
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="index.php">Home</a>
           </li>
-
+          <li class="nav-item">
+            <a class="nav-link" href="show_ex.php">Product</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="#">About us</a>
           </li>

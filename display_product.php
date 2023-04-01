@@ -61,7 +61,7 @@ $conn = new DB_conn;
  </thead>
  <tbody class="align-middle">
  <?php 
- $sql    = $conn->display_product();
+ $sql = $conn->display_product();
  $i =1 ;
  while($data = mysqli_fetch_array($sql)){
     //echo $data['first_name'];?>

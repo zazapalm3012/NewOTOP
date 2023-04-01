@@ -3,7 +3,7 @@ session_start();
 include_once("navbar.php");
 include_once("connectDB.php");
 $conn = new DB_conn;
-$name  = $_GET['id'];
+$name  = $_POST['id'];
 $sql = $conn -> autofill_name($name);
 while($data = mysqli_fetch_array($sql)){
     $f_name = $data['first_name'];
@@ -11,8 +11,6 @@ while($data = mysqli_fetch_array($sql)){
     $e_mail = $data['email'];
     $u_name = $data['username'];
     $t_ype = $data['type'];
-    $f_name .= $l_name;
-   $fullname =  $f_name ." ". $l_name;
    }
 ?>
 <!DOCTYPE html>
@@ -46,26 +44,80 @@ while($data = mysqli_fetch_array($sql)){
 
 </head>
 <body>
-<form id="form1" method= "POST" action="">
-<div class="row justify-content-md-center mt-2">
-    <div class = "col-md-6">
-        <div class = "alert alert-success " h4 role alert="alert">
-            ข้อมูลสำหรับจัดส่งสินค้า
-        </div>
+  
+<form id="form1" method= "PORT" action="insert_cart.php" enctype="multipart/form-data" >
+<div class="row justify-content-sm-left mt-2 ms-4 col-11 ">
+    <div class = "col-md-5 ms-auto">
         ชื่อ-นามสกุล:
-        <!--
-        <input type="text" name="cus_name" class = "form-control mb-2 " disabled value=<?=$f_name ?>>
-        -->
-        <input type="text" name="cus_name" class = "form-control mb-2 " required placeholder="ชื่อ-นามสกุล ...">
-        
+        <div class="control-group">
+        <input type="text" name="cus_name" class = "form-control mb-2 " required placeholder="ชื่อ-นามสกุล ..."
+        value="<?php echo $f_name," ",$l_name?>" readonly>
+        </div>
         ที่อยู่สำหรับการจัดส่ง:
-        <textarea class = "form-control mt-2 " required placeholder="ที่อยู่..." name="cus_add" rows="10"></textarea>
+        <div class="control-group">
+        <textarea class = "form-control mt-2 " required placeholder="ที่อยู่..." name="cus_add" id="cus_add" rows="10"></textarea>
+        </div>
         เบอร์โทรศัพท์:
-        <input type="number" name="cus_tel" class = "from-control mt-3" required placeholder="เบอร์โทรศัพท์ ...">
+        <div class="control-group">
+        <input type="number" name="cus_tel" id="cus_tel" class = "from-control mt-3" required placeholder="เบอร์โทรศัพท์ ...">
+        </div>
         <br><br>
-        <button><a>ยืนยัน</a>
+        <button class="btn btn-primary py-2 px-4" type="submit" name ='sendcart' id="sendcart">เข้าสู่ระบบ</button>
+        </form>
     </div>
-</div>
-</form>
 
+    </form>
+    <div class = "col-md-5 ms-auto mt-4">
+            <table class="table table-hover">
+                <tr>
+                    <th>ลำดับที่</th>
+                    <th>ชื่อ</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>ราคารวม</th>
+                </tr>
+                <?php
+                $Total=0;
+                $sumprice = 0;
+                $m=1;
+                if(isset($_SESSION["intLine"]) ){
+
+                for($i=0; $i <= (int)$_SESSION["intLine"]; $i++){
+                   if( isset($_SESSION["strProductID"][$i])){
+                    if(($_SESSION["strProductID"][$i]) != ""){
+                    $sql1 = $conn->select_product_by_session($_SESSION["strProductID"][$i]);
+                 
+                        //$result1 = mysqli_query($conn, $sql1);
+                        $row_pro = mysqli_fetch_array($sql1);
+
+                       $_SESSION["price"] = $row_pro['pPrice'];
+                        $Total = $_SESSION["strQty"][$i];
+                        $sum = $Total * $row_pro['pPrice'];
+                        $sumprice  =$sumprice + $sum;
+                ?>
+              <tr>
+                <td><?=$m?></td>
+                <td><?=$row_pro['pName']?></td>
+                <td><?=$row_pro['pPrice']?></td>
+                <td><?=$_SESSION['strQty'][$i]?></td>
+                <td><?=$sum?></td>
+            </tr>
+            <?php
+            $m+=1;
+                }
+                }
+            }
+        }
+        else{
+            echo "<script> alert('asdasdasd'); </script>";
+            echo "<script>window.location.href='index.php' </script>";
+
+        }
+                ?>
+            </table>
+            
+        </div>
+    
+</div>
 </body>
+</html>

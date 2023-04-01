@@ -140,6 +140,24 @@ class DB_conn{
                 $str = mysqli_query($this->conn, "SELECT * from member where first_name = '$name'");
                   return $str;
           }
+          function select_order_id (){
+            $str = mysqli_query($this -> conn , "select * from tb_order");
+            return $str;
+          }
+          function insert_cart($cus_name, $addess, $tel, $total){
+            $str = mysqli_query($this->conn, "insert into tb_order(cus_name,address,telephone,total_price,order_status)
+            values('$cus_name','$addess','$tel',' $total ','1')");
+                  return $str;
+          }
+          function insert_Detail_order($oId,$proId,$oPrice,$oQty,$Total){
+            $str = mysqli_query($this->conn, "insert into order_detail(orderID,pro_id,orderPrice,orderQty,Total)
+            values('$oId',' $proId ','$oPrice',' $oQty ','$Total'");
+              return $str;
+          }
+          function select_order_Npay(){
+            $str = mysqli_query($this->conn, "select COUNT(orderID) AS order_no from tb_order where order_status ='1'");
+              return $str;
+          }
              
 }
 ?>

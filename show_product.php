@@ -1,5 +1,7 @@
 <?php
 include_once ("connectDB.php");
+session_start();
+include_once ("navbar.php");
 
 $conn = new DB_conn;
 

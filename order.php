@@ -13,7 +13,6 @@ if(!isset($_SESSION["intLine"]))    //เช็คว่าแถวเป็น
 	 $_SESSION["strProductID"][0] = $_GET["id"];   //รหัสสินค้า
 	 $_SESSION["strQty"][0] = 1;                   //จำนวนสินค้า
 	 $_SESSION["cart"][0] = 1;                   //จำนวนสินค้า
-
 	header("location:cart2.php");
 }
 else
